@@ -2,6 +2,7 @@ from src.dataset.expla_graphs import ExplaGraphsDataset
 from src.dataset.scene_graphs import SceneGraphsDataset
 from src.dataset.scene_graphs_baseline import SceneGraphsBaselineDataset
 from src.dataset.webqsp import WebQSPDataset
+from src.dataset.webqsp_attn import WebQSPAttnDataset
 from src.dataset.webqsp_baseline import WebQSPBaselineDataset
 
 
@@ -10,5 +11,6 @@ load_dataset = {
     'scene_graphs': SceneGraphsDataset,
     'scene_graphs_baseline': SceneGraphsBaselineDataset,
     'webqsp': WebQSPDataset,
+    'webqsp_attn': WebQSPAttnDataset,
     'webqsp_baseline': WebQSPBaselineDataset,
 }

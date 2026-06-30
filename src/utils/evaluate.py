@@ -121,5 +121,6 @@ eval_funcs = {
     "scene_graphs": get_accuracy_gqa,
     "scene_graphs_baseline": get_accuracy_gqa,
     "webqsp": get_accuracy_webqsp,
+    "webqsp_attn": get_accuracy_webqsp,
     "webqsp_baseline": get_accuracy_webqsp,
 }
