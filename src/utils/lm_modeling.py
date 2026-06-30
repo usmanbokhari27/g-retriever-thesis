@@ -8,7 +8,7 @@ from torch.utils.data import DataLoader
 import numpy as np
 
 pretrained_repo = 'sentence-transformers/all-roberta-large-v1'
-batch_size = 1024  # Adjust the batch size as needed
+batch_size = 512  # reduced from 1024 to avoid CUDA OOM on T4 (second text2embedding fn is fp32)
 
 
 # replace with the path to the word2vec file
@@ -128,8 +128,8 @@ def sber_text2embedding(model, tokenizer, device, text):
             batch = {key: value.to(device) for key, value in batch.items()}
 
             # Forward pass
-            embeddings = model(input_ids=batch["input_ids"], att_mask=batch["att_mask"])
-
+            with torch.cuda.amp.autocast(dtype=torch.float16):
+                embeddings = model(input_ids=batch["input_ids"], att_mask=batch["att_mask"]).float()
             # Append the embeddings to the list
             all_embeddings.append(embeddings)
 

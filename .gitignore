@@ -68,3 +68,8 @@ output/
 wandb/
 
 .vscode/
+
+# Local backups / installers (not for git)
+*.bak
+*.bak_*
+miniconda.sh

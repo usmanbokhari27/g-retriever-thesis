@@ -2,7 +2,7 @@ import contextlib
 import torch
 import torch.nn as nn
 from torch.cuda.amp import autocast as autocast
-from transformers import AutoModelForCausalLM, AutoTokenizer
+from transformers import AutoModelForCausalLM, AutoTokenizer, BitsAndBytesConfig
 from torch_scatter import scatter
 from src.model.gnn import load_gnn_model
 from peft import (
@@ -30,18 +30,26 @@ class GraphLLM(torch.nn.Module):
         self.max_new_tokens = args.max_new_tokens
 
         print('Loading LLAMA')
+        # QLoRA baseline: load LLaMA 3.1 8B in 4-bit NF4 to fit the T4 (16GB).
+        bnb_config = BitsAndBytesConfig(
+            load_in_4bit=True,
+            bnb_4bit_compute_dtype=torch.float16,
+            bnb_4bit_quant_type="nf4",
+            bnb_4bit_use_double_quant=True,
+        )
         kwargs = {
-            "max_memory": {0: '80GiB', 1: '80GiB'},
             "device_map": "auto",
             "revision": "main",
         }
 
-        self.tokenizer = AutoTokenizer.from_pretrained(args.llm_model_path, use_fast=False, revision=kwargs["revision"])
+        # NOTE: use_fast=False (the original) breaks the LLaMA 3.1 tokenizer.
+        self.tokenizer = AutoTokenizer.from_pretrained(args.llm_model_path, revision=kwargs["revision"])
         self.tokenizer.pad_token_id = 0
         self.tokenizer.padding_side = 'left'
 
         model = AutoModelForCausalLM.from_pretrained(
             args.llm_model_path,
+            quantization_config=bnb_config,
             torch_dtype=torch.float16,
             low_cpu_mem_usage=True,
             **kwargs
@@ -125,8 +133,8 @@ class GraphLLM(torch.nn.Module):
         # encode special tokens
         eos_tokens = self.tokenizer(EOS, add_special_tokens=False)
         eos_user_tokens = self.tokenizer(EOS_USER, add_special_tokens=False)
-        bos_embeds = self.word_embedding(self.tokenizer(BOS, add_special_tokens=False, return_tensors='pt').input_ids[0])
-        pad_embeds = self.word_embedding(torch.tensor(self.tokenizer.pad_token_id)).unsqueeze(0)
+        bos_embeds = self.word_embedding(self.tokenizer(BOS, add_special_tokens=False, return_tensors='pt').input_ids[0].to(self.model.device))
+        pad_embeds = self.word_embedding(torch.tensor(self.tokenizer.pad_token_id).to(self.model.device)).unsqueeze(0)
 
         # encode graphs
         graph_embeds = self.encode_graphs(samples)
@@ -178,8 +186,8 @@ class GraphLLM(torch.nn.Module):
 
         # encode special tokens
         eos_user_tokens = self.tokenizer(EOS_USER, add_special_tokens=False)
-        bos_embeds = self.word_embedding(self.tokenizer(BOS, add_special_tokens=False, return_tensors='pt').input_ids[0])
-        pad_embeds = self.word_embedding(torch.tensor(self.tokenizer.pad_token_id)).unsqueeze(0)
+        bos_embeds = self.word_embedding(self.tokenizer(BOS, add_special_tokens=False, return_tensors='pt').input_ids[0].to(self.model.device))
+        pad_embeds = self.word_embedding(torch.tensor(self.tokenizer.pad_token_id).to(self.model.device)).unsqueeze(0)
 
         # encode graphs
         graph_embeds = self.encode_graphs(samples)
