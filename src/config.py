@@ -44,5 +44,7 @@ def parse_args_llama():
     parser.add_argument("--gnn_num_heads", type=int, default=4)
     parser.add_argument("--gnn_dropout", type=float, default=0.0)
 
+    parser.add_argument("--confidence_head", action="store_true")
+    parser.add_argument("--confidence_weight", type=float, default=0.1)
     args = parser.parse_args()
     return args
