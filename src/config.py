@@ -46,5 +46,10 @@ def parse_args_llama():
 
     parser.add_argument("--confidence_head", action="store_true")
     parser.add_argument("--confidence_weight", type=float, default=0.1)
+    parser.add_argument("--refine", action="store_true")
+    parser.add_argument("--refine_tau", type=float, default=0.5)
+    parser.add_argument("--refine_max_iters", type=int, default=2)
+    parser.add_argument("--refine_max_nodes", type=int, default=60)
+    parser.add_argument("--checkpoint_path", type=str, default="")
     args = parser.parse_args()
     return args
