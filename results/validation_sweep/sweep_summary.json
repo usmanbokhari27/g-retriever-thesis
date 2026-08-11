@@ -1,0 +1,74 @@
+[
+  {
+    "tag": "off",
+    "tau": 0.0,
+    "K": 0,
+    "hit": 70.20408163265306
+  },
+  {
+    "tag": "tau0.4_K2",
+    "tau": 0.4,
+    "K": 2,
+    "hit": 70.61224489795919,
+    "fired": 0,
+    "n": 245,
+    "fired_pct": 0.0,
+    "mean_iters": 0.0,
+    "max_iters": 0
+  },
+  {
+    "tag": "tau0.5_K2",
+    "tau": 0.5,
+    "K": 2,
+    "hit": 68.9795918367347,
+    "fired": 30,
+    "n": 245,
+    "fired_pct": 12.24,
+    "mean_iters": 0.122,
+    "max_iters": 1
+  },
+  {
+    "tag": "tau0.6_K2",
+    "tau": 0.6,
+    "K": 2,
+    "hit": 67.75510204081633,
+    "fired": 88,
+    "n": 245,
+    "fired_pct": 35.92,
+    "mean_iters": 0.376,
+    "max_iters": 2
+  },
+  {
+    "tag": "tau0.7_K2",
+    "tau": 0.7,
+    "K": 2,
+    "hit": 66.93877551020408,
+    "fired": 143,
+    "n": 245,
+    "fired_pct": 58.37,
+    "mean_iters": 0.641,
+    "max_iters": 2
+  },
+  {
+    "tag": "tau0.5_K1",
+    "tau": 0.5,
+    "K": 1,
+    "hit": 70.61224489795919,
+    "fired": 30,
+    "n": 245,
+    "fired_pct": 12.24,
+    "mean_iters": 0.122,
+    "max_iters": 1
+  },
+  {
+    "tag": "tau0.5_K3",
+    "tau": 0.5,
+    "K": 3,
+    "hit": 71.42857142857143,
+    "fired": 30,
+    "n": 245,
+    "fired_pct": 12.24,
+    "mean_iters": 0.122,
+    "max_iters": 1
+  }
+]

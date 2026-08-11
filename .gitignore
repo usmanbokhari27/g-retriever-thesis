@@ -73,3 +73,10 @@ wandb/
 *.bak
 *.bak_*
 miniconda.sh
+
+# --- committed experimental artefacts -------------------------------------
+# results/ holds the predictions, logs and figures behind the reported
+# numbers; they are deliberately tracked despite the patterns above.
+!results/**/*.log
+!results/**/*.csv
+!results/**/*.json

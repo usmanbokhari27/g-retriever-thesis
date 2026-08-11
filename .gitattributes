@@ -1,0 +1,9 @@
+# Shell scripts and Python run on Linux (EC2); CRLF would break them
+# regardless of a contributor's core.autocrlf setting.
+* text=auto eol=lf
+*.sh   text eol=lf
+*.py   text eol=lf
+*.pdf  binary
+*.png  binary
+*.svg  binary
+*.zip  binary
